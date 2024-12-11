@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar with Booking</title>
+    <style>
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Calendar Styles */
+        .calendar-container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            width: 558px;
+            padding: 20px;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        #monthName {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px;
+            font-size: 1.2em;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* Calendar Grid */
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            grid-template-rows: repeat(6, 1fr);
+            gap: 5px;
+            font-size: 1em;
+            text-align: center;
+        }
+
+        .calendar-grid div {
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #f0f0f0;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .calendar-grid div:hover {
+            background-color: #d1f0d1;
+            transform: scale(1.1);
+        }
+
+        /* Selected Date Styles */
+        .selected {
+            background-color: #4CAF50;
+            color: white;
+            font-weight: bold;
+        }
+
+        /* Fully Booked Date Styles (Red Color) */
+        .fully-booked {
+            background-color: #ff0000; /* Red for fully booked */
+            color: #ffffff; /* White text */
+            font-weight: bold;
+            cursor: not-allowed; /* Disable hover and click */
+        }
+
+        /* Booking Details */
+        .booking-details {
+            text-align: center;
+            padding: 20px;
+            background-color: #e0f7e0;
+            border-radius: 5px;
+            width: 300px;
+            margin-top: 20px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #confirmBookingBtn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #confirmBookingBtn:hover {
+            background-color: #45a049;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="calendar-container">
+        <div class="calendar-header">
+            <button id="prevMonthBtn" disabled>&lt;</button>
+            <h2 id="monthName"></h2>
+            <button id="nextMonthBtn">&gt;</button>
+        </div>
+        <div class="calendar-grid" id="calendarGrid"></div>
+    </div>
+
+    <div id="bookingDetails" class="booking-details hidden">
+        <p id="selectedDateMessage"></p>
+      <a href="register2.html">  <button id="confirmBookingBtn">Confirm Booking</button></a>
+    </div>
+
+    <script>
+        // Getting today's date and setting initial variables
+        const currentDate = new Date();
+        let selectedDate = null;
+
+        // DOM elements
+        const monthNameElement = document.getElementById('monthName');
+        const calendarGridElement = document.getElementById('calendarGrid');
+        const prevMonthBtn = document.getElementById('prevMonthBtn');
+        const nextMonthBtn = document.getElementById('nextMonthBtn');
+        const bookingDetails = document.getElementById('bookingDetails');
+        const selectedDateMessage = document.getElementById('selectedDateMessage');
+        const confirmBookingBtn = document.getElementById('confirmBookingBtn');
+
+        // Current year and month
+        let currentMonth = currentDate.getMonth();  // Current month (0-11)
+        let currentYear = currentDate.getFullYear();  // Current year
+
+        // Month names
+        const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+        // Object to keep track of booking counts for each date
+        const bookingCounts = {};
+
+        // Functions to update the calendar
+        function updateCalendar(monthOffset = 0) {
+            // Update month and year
+            currentMonth += monthOffset;
+
+            // Wrap around if currentMonth goes beyond 11 (December)
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            } else if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+
+            // Update the displayed month and year
+            const firstDayOfMonth = new Date(currentYear, currentMonth, 1);
+            const lastDayOfMonth = new Date(currentYear, currentMonth + 1, 0);
+
+            monthNameElement.innerText = `${monthNames[currentMonth]} ${currentYear}`;
+
+            // Clear previous days
+            calendarGridElement.innerHTML = '';
+
+            // Fill in the calendar with days
+            for (let i = 0; i < firstDayOfMonth.getDay(); i++) {
+                const emptyCell = document.createElement('div');
+                calendarGridElement.appendChild(emptyCell);
+            }
+
+            for (let day = 1; day <= lastDayOfMonth.getDate(); day++) {
+                const dayElement = document.createElement('div');
+                dayElement.innerText = day;
+
+                // Add event listener for date selection
+                dayElement.addEventListener('click', () => selectDate(day));
+
+                // If the date is fully booked, mark it as such
+                if (bookingCounts[day] && bookingCounts[day] >= 5) {
+                    dayElement.classList.add('fully-booked'); // Add the red color class
+                    dayElement.style.pointerEvents = 'none'; // Disable clicking on fully booked dates
+                }
+
+                calendarGridElement.appendChild(dayElement);
+            }
+
+            // Enable/disable previous button based on the current month
+            if (currentMonth === currentDate.getMonth() && currentYear === currentDate.getFullYear()) {
+                prevMonthBtn.disabled = true;
+            } else {
+                prevMonthBtn.disabled = false;
+            }
+        }
+
+        // Function to handle date selection
+        function selectDate(day) {
+            if (bookingCounts[day] && bookingCounts[day] >= 5) {
+                alert(`This date (${day} ${monthNameElement.innerText}) is fully booked!`);
+                return; // Don't allow selection if the date is fully booked
+            }
+
+            // If a date is already selected, remove the "selected" class
+            if (selectedDate) {
+                selectedDate.classList.remove('selected');
+            }
+
+            // Mark the clicked date as selected
+            const dayElements = document.querySelectorAll('.calendar-grid div');
+            dayElements.forEach(dayElement => {
+                if (parseInt(dayElement.innerText) === day) {
+                    selectedDate = dayElement;
+                    selectedDate.classList.add('selected');
+                    selectedDateMessage.innerText = `You have selected: ${day} ${monthNameElement.innerText}`;
+                    bookingDetails.classList.remove('hidden');
+                }
+            });
+        }
+
+        // Event listeners for month navigation
+        prevMonthBtn.addEventListener('click', () => updateCalendar(-1));
+        nextMonthBtn.addEventListener('click', () => updateCalendar(1));
+
+        // Function to confirm booking
+        confirmBookingBtn.addEventListener('click', () => {
+            // Increment the booking count for the selected date
+            const selectedDay = parseInt(selectedDate.innerText);
+            bookingCounts[selectedDay] = (bookingCounts[selectedDay] || 0) + 1;
+
+            // Check if the date is now fully booked
+            if (bookingCounts[selectedDay] >= 5) {
+                alert(`Booking full for ${selectedDay} ${monthNameElement.innerText}!`);
+                selectedDate.classList.add('fully-booked'); // Apply red color
+                selectedDate.style.pointerEvents = 'none'; // Disable clicking on this fully booked date
+            } else {
+                alert(`Booking confirmed for ${selectedDay} ${monthNameElement.innerText}`);
+            }
+
+            // Hide the booking details and reset selection
+            bookingDetails.classList.add('hidden');
+            selectedDate.classList.remove('selected');
+        });
+
+        // Initial calendar setup
+        updateCalendar();
+    </script>
+
+</body>
+</html>

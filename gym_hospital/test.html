@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>/* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        
+        .search-container {
+            max-width: 900px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        h1 {
+            color: #0056b3;
+            margin-bottom: 20px;
+        }
+        
+        /* Search Bar */
+        #searchBar {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        
+        /* Hospital List */
+        #hospitalList {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            text-align: left;
+        }
+        
+        #hospitalList li {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        #hospitalList li:last-child {
+            border-bottom: none;
+        }
+        
+        /* Checkboxes */
+        input[type="checkbox"] {
+            margin-right: 10px;
+        }
+        
+        label {
+            font-size: 16px;
+            color: #333;
+        }
+        
+        label:hover {
+            cursor: pointer;
+            color: #0056b3;
+        }
+        .btn{
+        font-size: 20px;
+        width: 200px;
+        height: 50px;
+        font-family: Georgia, serif;
+        /* cursor: pointer; */
+        margin-top: 60px;
+        padding: 4px 14px;
+        color: rgb(251, 253, 255);
+        background-color:rgb(46, 108, 216);
+        border-radius: 20px;
+    
+    }
+    .btn:hover{
+        color: rgb(130, 130, 130);
+        text-decoration:underline;
+        background-color: rgb(26, 25, 25);
+
+    }
+        </style>
+</head>
+<body style="background-image: url('photos/blur.jpg');">
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Search Bar</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="search-container">
+        <h1>Hospital List</h1>
+        <label for="cars">Choose Hospital:</label>
+
+        <select name="cars" id="cars">
+            <option value="ch">
+                CHOITHRAM NETRALAYA
+Shriram Talawali, Dhar Road
+          </option>
+          <option value="saab">
+                MEDIPLUS HOSPITAL & RESEARCH CENTRE
+166, Nyay Nagar Main Rd, Sukhlia, Indore, 452010
+          </option>
+          <option value="mercedes">
+                Bombay Hospital Indore
+Eastern Ring Rd,Ring Rd, IDA Scheme No.94/95, Tulsi Nagar, Vijay Nagar Madhya Pradesh
+          </option>
+          <option value="audi">
+            APOLLO HOSPITALS
+            Sector-D, Scheme No 74C, Vijay Nagar, Indore, Madhya Pradesh 452010
+          </option>
+          <option value="audi">
+            APPLE HOSPITAL
+15/1, Bhawarkuan Main Road, Transport Nagar, Indore-452008
+          </option>
+          <option value="audi">
+            ASIAN INSTITUTE OF INFERTILITY CENTER INDORE
+10 - E, HIG Main Road,Near Christian Eminent School,LIG Circle, Indore
+          </option>
+          <option value="audi">
+            BHANDARI HOSPITAL AND RESEARCH CENTER INDORE
+21-23 G F, Scheme No. 54, Opp. Meghdoot Garden, Indore - 452010.
+          </option>
+          <option value="audi">
+            Arihant Hospital and Research Centre
+          </option>
+          <option value="audi">
+            Greater Kailash Hospital
+          </option>
+          <option value="audi">
+            Noble Hospital
+          </option>
+          
+        </select>
+        <a href="calender.html"><button class="btn">Continue</button></a>  
+    </div>
+
+    <script>
+        function filterHospitals() {
+            const searchInput = document.getElementById('searchBar').value.toLowerCase();
+            const hospitalList = document.getElementById('hospitalList');
+            const hospitals = hospitalList.getElementsByTagName('li');
+
+            for (let i = 0; i < hospitals.length; i++) {
+                const label = hospitals[i].getElementsByTagName('label')[0];
+                if (label.innerHTML.toLowerCase().includes(searchInput)) {
+                    hospitals[i].style.display = '';
+                } else {
+                    hospitals[i].style.display = 'none';
+                }
+            }
+        }
+    </script>
+</body>
+</html>
+
+</body>
+</html>

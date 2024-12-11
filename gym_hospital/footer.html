@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OPD Bed Booking System</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+</head>
+<style>
+    /* Resetting margin and padding for all elements */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Footer styles */
+footer {
+    margin-top: 235px;
+    background-color: #333;
+    color: white;
+    padding: 40px 20px;
+    font-family: Arial, sans-serif;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.footer-logo {
+    flex: 1;
+    padding: 10px;
+}
+
+.footer-logo h2 {
+    color: #f1c40f;
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.footer-logo p {
+    font-size: 16px;
+    color: #ccc;
+}
+
+.footer-links, .footer-contact {
+    flex: 1;
+    padding: 10px;
+}
+
+.footer-links h3, .footer-contact h3 {
+    color: #f1c40f;
+    margin-bottom: 10px;
+}
+
+.footer-links ul, .footer-contact ul {
+    list-style: none;
+}
+
+.footer-links ul li, .footer-contact ul li {
+    margin-bottom: 10px;
+}
+
+.footer-links ul li a {
+    text-decoration: none;
+    color: #ccc;
+    font-size: 16px;
+}
+
+.footer-links ul li a:hover {
+    color: #f1c40f;
+}
+
+.footer-contact ul li span {
+    font-weight: bold;
+}
+
+/* Bottom copyright section */
+.footer-bottom {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 14px;
+    color: #aaa;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .footer-content {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .footer-logo, .footer-links, .footer-contact {
+        flex: none;
+        width: 100%;
+        text-align: center;
+    }
+}
+
+</style>
+<body>
+
+    <!-- Your main content goes here -->
+
+    <!-- Footer Section -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <h2>OPD Bed Booking</h2>
+                <p>Your Health, Our Priority</p>
+            </div>
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="services.html">Booking</a></li>
+                    <!-- <li><a href="contact.html">Contact</a></li> -->
+                    <li><a href="faq.html">FAQ</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h3>Contact Us</h3>
+                <ul>
+                    <li><span>Phone:</span> +123 456 7890</li>
+                    <li><span>Email:</span> info@opdbookingsystem.com</li>
+                    <li><span>Address:</span> 123 Health St., City, Country</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2024 OPD Bed Booking System. All Rights Reserved.</p>
+        </div>
+    </footer>
+    <script>
+        // Example of opening dialer on phone number click
+document.querySelector('.footer-contact ul li span + span').addEventListener('click', function() {
+    window.location.href = 'tel:+1234567890';
+});
+
+// Example of opening email client on email click
+document.querySelector('.footer-contact ul li span + span').addEventListener('click', function() {
+    window.location.href = 'mailto:info@opdbookingsystem.com';
+});
+
+    </script>
+
+</body>
+</html>
